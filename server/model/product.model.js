@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import { ref } from "firebase-functions/v1/database";
+import mongoose, { Schema, ObjectId, model } from "mongoose";
 
 const productSchema = new Schema({
     name: {
@@ -8,18 +9,18 @@ const productSchema = new Schema({
     images: {
         type: [String],
     },
-    brandId: {
-        type: String,
-        index: true,  
+    type: {
+        type: ObjectId,
+        ref: "Type",
         required: true
     },
-    typeId: {
-        type: String,
-        index: true,  
+    brand: {
+        type: ObjectId,
+        ref: "Brand",
         required: true
     },
 });
 
-const Product = mongoose.model("Product", productSchema);
+const Product = model("Product", productSchema);
 
 export default Product;
