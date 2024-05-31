@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./componenets/RootLayout.tsx";
-import Register from "./componenets/Register.tsx";
+import Login from "./componenets/Login.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Register />,
+    element: <Login />,
     errorElement: <div>404 Not Found</div>,
   },
 ]);
