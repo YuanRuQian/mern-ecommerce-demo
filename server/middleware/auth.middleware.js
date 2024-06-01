@@ -1,6 +1,6 @@
 import {verify} from "jsonwebtoken";
 
-module.exports = (req, res, next) => {
+const auth = (req, res, next) => {
     try {
         const token = req.headers.authorization.replace("Bearer ", "");
         const decoded = verify(token, process.env.JWT_SECRET);
@@ -12,3 +12,5 @@ module.exports = (req, res, next) => {
         });
     }
 };
+
+export default auth;

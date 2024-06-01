@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, ObjectId } from "mongoose";
 
 const userSchema = Schema({
     username: {
@@ -12,7 +12,13 @@ const userSchema = Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    roles: [
+        {
+            type: ObjectId,
+            ref: "Role"
+        }
+    ]
 })
 
 const user = model("User", userSchema)

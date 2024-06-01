@@ -4,6 +4,7 @@ import seed from "./routes/seed.js";
 import product from "./routes/product.js";
 import dbConfig from "./config/db.config.js";
 import db from "./model/index.js";
+import auth from './routes/auth.js'
 
 const PORT = process.env.PORT || 5050;
 const app = express();
@@ -33,6 +34,11 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to Lydia's MERN demo." });
 });
 
+// routes
+auth(app);
+
+console.log(`connection:\nmongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+
 db.mongoose
   .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
     useNewUrlParser: true,
@@ -48,7 +54,6 @@ db.mongoose
   });
 
 function initial() {
-    // TODO: Add code to initialize the database
 }
 
 app.listen(PORT, () => {
