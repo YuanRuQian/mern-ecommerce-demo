@@ -12,21 +12,17 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
-type RegisterFormData = {
-    username: string;
-    email: string;
-    password: string;
-};
+import { register } from "../actions/auth";
+import { RegisterProps } from "../actions/types";
 
 const Register = () => {
-    const [formData, setFormData] = useState<RegisterFormData>({
+    const [formData, setFormData] = useState<RegisterProps>({
         username: "",
         email: "",
         password: ""
     });
 
-    const [errors, setErrors] = useState<RegisterFormData>({
+    const [errors, setErrors] = useState<RegisterProps>({
         username: "",
         email: "",
         password: ""
@@ -51,7 +47,7 @@ const Register = () => {
     };
 
     const validate = () => {
-        const newErrors: RegisterFormData = {
+        const newErrors: RegisterProps = {
             username: "",
             email: "",
             password: ""
@@ -82,6 +78,7 @@ const Register = () => {
         if (Object.values(validationErrors).every((err) => err === "")) {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
+            register(formData);
         } else {
             setErrors(validationErrors);
         }
@@ -176,6 +173,7 @@ const Register = () => {
                 </FormHelperText>
             </FormControl>
             <Button
+                onClick={handleSubmit}
                 type="submit"
                 variant="contained"
                 color="primary"

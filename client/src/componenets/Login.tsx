@@ -12,6 +12,9 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useDispatch } from "react-redux";
+import { signInAsync } from "../slice/authSlice";
+import { AppDispatch } from "../store";
 
 type LoginFormData = {
     email: string;
@@ -19,6 +22,12 @@ type LoginFormData = {
 };
 
 const Register = () => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleSignIn = (email: string, password: string) => {
+        dispatch(signInAsync({ email, password }));
+    };
+
     const [formData, setFormData] = useState<LoginFormData>({
         email: "",
         password: ""
@@ -73,6 +82,7 @@ const Register = () => {
         if (Object.values(validationErrors).every((err) => err === "")) {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
+            handleSignIn(formData.email, formData.password);
         } else {
             setErrors(validationErrors);
         }
