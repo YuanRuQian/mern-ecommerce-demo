@@ -7,15 +7,28 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SetMealIcon from "@mui/icons-material/SetMeal";
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../hook";
 
-const loggedInPages = ["Home", "Logout"];
-const loggedOutPages = ["SignIn", "Register"];
+type MenuItem = {
+    key: string;
+    component: JSX.Element;
+};
+// TODO: add logout logic
+const loggedInPages: MenuItem[] = [
+    { key: "products", component: <Link to="/products">Products</Link> },
+    { key: "logout", component: <Link to="/">Logout</Link> }
+];
+const loggedOutPages: MenuItem[] = [
+    { key: "login", component: <Link to="/login">Login</Link> },
+    {
+        key: "register",
+        component: <Link to="/register">Register</Link>
+    }
+];
 
 const ResponsiveAppBar = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
@@ -23,41 +36,33 @@ const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null
     );
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-        null
-    );
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
-
-    const onMenuItemClick = (page: string) => {
+    const onMenuItemClick = (menuItem: MenuItem) => {
+        const { key, component } = menuItem;
         return (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">{page}</Typography>
+            <MenuItem key={key} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{component}</Typography>
             </MenuItem>
         );
     };
 
-    const onUserMenuItemClick = (page: string) => {
+    const onUserMenuItemClick = (menuItem: MenuItem) => {
+        const { key, component } = menuItem;
         return (
             <Button
-                key={page}
+                key={key}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
             >
-                {page}
+                {component}
             </Button>
         );
     };

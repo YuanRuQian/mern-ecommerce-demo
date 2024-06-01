@@ -1,20 +1,16 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from "./Header";
-import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
 
 const theme = createTheme({
     // other theme properties
 });
 
-type RootLayoutProps = {
-    children?: React.ReactNode;
-};
-
-const RootLayout = ({ children }: RootLayoutProps) => {
+const RootLayout = () => {
     return (
         <ThemeProvider theme={theme}>
             <Header />
-            <Box sx={{ p: 16 }}>{children}</Box>
+            <Outlet />
         </ThemeProvider>
     );
 };

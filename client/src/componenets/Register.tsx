@@ -12,10 +12,14 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { register } from "../actions/auth";
-import { RegisterProps } from "../actions/types";
+import { RegisterProps } from "../utils/types";
+import { useDispatch } from "react-redux";
+import { registerAsync } from "../slice/authSlice";
+import { AppDispatch } from "../store";
 
 const Register = () => {
+    const dispatch = useDispatch<AppDispatch>();
+
     const [formData, setFormData] = useState<RegisterProps>({
         username: "",
         email: "",
@@ -72,13 +76,17 @@ const Register = () => {
         return newErrors;
     };
 
+    const onHandleRegister = (formData: RegisterProps) => {
+        dispatch(registerAsync(formData));
+    };
+
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
         const validationErrors = validate();
         if (Object.values(validationErrors).every((err) => err === "")) {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
-            register(formData);
+            onHandleRegister(formData);
         } else {
             setErrors(validationErrors);
         }
@@ -173,7 +181,6 @@ const Register = () => {
                 </FormHelperText>
             </FormControl>
             <Button
-                onClick={handleSubmit}
                 type="submit"
                 variant="contained"
                 color="primary"

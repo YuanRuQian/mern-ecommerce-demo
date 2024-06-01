@@ -1,4 +1,3 @@
-import { useEffect, useState, createContext } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import ProductList from "./componenets/ProductList";
 import Header from "./componenets/Header";
