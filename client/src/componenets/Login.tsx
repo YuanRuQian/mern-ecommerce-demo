@@ -4,14 +4,14 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import IconButton from '@mui/material/IconButton';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormControl from '@mui/material/FormControl';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from "@mui/material/IconButton";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 type LoginFormData = {
     email: string;
@@ -21,12 +21,12 @@ type LoginFormData = {
 const Register = () => {
     const [formData, setFormData] = useState<LoginFormData>({
         email: "",
-        password: "",
+        password: ""
     });
 
     const [errors, setErrors] = useState<LoginFormData>({
         email: "",
-        password: "",
+        password: ""
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -35,27 +35,33 @@ const Register = () => {
         setShowPassword(!showPassword);
     };
 
-    const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
+    const handleChange: React.ChangeEventHandler<
+        HTMLInputElement | HTMLTextAreaElement
+    > = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMouseDownPassword = (
+        event: React.MouseEvent<HTMLButtonElement>
+    ) => {
         event.preventDefault();
     };
 
     const validate = () => {
         const newErrors: LoginFormData = {
             email: "",
-            password: "",
+            password: ""
         };
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,20}$/;
+        const passwordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,20}$/;
 
         if (!emailRegex.test(formData.email)) {
             newErrors.email = "Email must be a valid email address.";
         }
         if (!passwordRegex.test(formData.password)) {
-            newErrors.password = "Password must be minimum 8 characters, maximum 20 characters, at least one uppercase letter, one lowercase letter, one number and one special character.";
+            newErrors.password =
+                "Password must be minimum 8 characters, maximum 20 characters, at least one uppercase letter, one lowercase letter, one number and one special character.";
         }
 
         return newErrors;
@@ -74,8 +80,8 @@ const Register = () => {
 
     return (
         <Box
-            sx={{ display: 'flex', flexWrap: 'wrap' }}
-            flexDirection={'column'}
+            sx={{ display: "flex", flexWrap: "wrap" }}
+            flexDirection={"column"}
             component="form"
             noValidate
             autoComplete="off"
@@ -83,9 +89,13 @@ const Register = () => {
             alignItems="center"
             justifyContent="center"
         >
-            <Typography variant="h4" gutterBottom>Login</Typography>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel error={!!errors.email} htmlFor="outlined-email">Email</InputLabel>
+            <Typography variant="h4" gutterBottom>
+                Login
+            </Typography>
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <InputLabel error={!!errors.email} htmlFor="outlined-email">
+                    Email
+                </InputLabel>
                 <OutlinedInput
                     id="outlined-email"
                     type="email"
@@ -95,13 +105,20 @@ const Register = () => {
                     name="email"
                     value={formData.email}
                 />
-                <FormHelperText error={!!errors.email}>{errors.email}</FormHelperText>
+                <FormHelperText error={!!errors.email}>
+                    {errors.email}
+                </FormHelperText>
             </FormControl>
-            <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel error={!!errors.password} htmlFor="outlined-adornment-password">Password</InputLabel>
+            <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <InputLabel
+                    error={!!errors.password}
+                    htmlFor="outlined-adornment-password"
+                >
+                    Password
+                </InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     onChange={handleChange}
                     error={!!errors.password}
                     endAdornment={
@@ -113,7 +130,11 @@ const Register = () => {
                                 color={errors.password ? "error" : "inherit"}
                                 edge="end"
                             >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                {showPassword ? (
+                                    <VisibilityOff />
+                                ) : (
+                                    <Visibility />
+                                )}
                             </IconButton>
                         </InputAdornment>
                     }
@@ -121,9 +142,16 @@ const Register = () => {
                     name="password"
                     value={formData.password}
                 />
-                <FormHelperText error={!!errors.password}>{errors.password || ""}</FormHelperText>
+                <FormHelperText error={!!errors.password}>
+                    {errors.password || ""}
+                </FormHelperText>
             </FormControl>
-            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+            <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+            >
                 Login
             </Button>
         </Box>

@@ -1,27 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import ProductList, { Product } from "./componenets/ProductList";
+import ProductList from "./componenets/ProductList";
 import Header from "./componenets/Header";
 
 const theme = createTheme({
-  // other theme properties
+    // other theme properties
 });
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    fetch(`http://localhost:5050/product`)
-      .then((res) => res.json())
-      .then((data) => setProducts(data));
-  });
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <ProductList products={products} />
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <Header />
+            <ProductList />
+        </ThemeProvider>
+    );
 }
 
 export default App;

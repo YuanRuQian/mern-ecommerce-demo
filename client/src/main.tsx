@@ -5,17 +5,17 @@ import RootLayout from "./componenets/RootLayout.tsx";
 import Login from "./componenets/Login.tsx";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Login />,
-    errorElement: <div>404 Not Found</div>,
-  },
+    {
+        path: "/",
+        element: <Login />,
+        errorElement: <div>404 Not Found</div>
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RootLayout>
-      <RouterProvider router={router} />
-    </RootLayout>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <RootLayout>
+            <RouterProvider router={router} />
+        </RootLayout>
+    </React.StrictMode>
 );
