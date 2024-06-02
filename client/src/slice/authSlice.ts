@@ -68,25 +68,25 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(signInAsync.fulfilled, (state, action) => {
-                state.isUserLoggedIn = true;
-                state.user = action.payload.userData;
-                state.accessToken = action.payload.accessToken;
                 localStorage.setItem("accessToken", action.payload.accessToken);
                 localStorage.setItem(
                     "user",
                     JSON.stringify(action.payload.userData)
                 );
+                state.isUserLoggedIn = true;
+                state.user = action.payload.userData;
+                state.accessToken = action.payload.accessToken;
             })
 
             .addCase(registerAsync.fulfilled, (state, action) => {
-                state.isUserLoggedIn = true;
-                state.user = action.payload.userData;
-                state.accessToken = action.payload.accessToken;
                 localStorage.setItem("accessToken", action.payload.accessToken);
                 localStorage.setItem(
                     "user",
                     JSON.stringify(action.payload.userData)
                 );
+                state.isUserLoggedIn = true;
+                state.user = action.payload.userData;
+                state.accessToken = action.payload.accessToken;
             });
     }
 });

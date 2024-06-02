@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RootLayout from "./componenets/RootLayout.tsx";
 import Login from "./componenets/Login.tsx";
 import { Provider } from "react-redux";
@@ -11,13 +11,6 @@ import { useAppSelector } from "./hook.ts";
 
 const App = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (isUserLoggedIn) {
-            navigate("/products");
-        }
-    }, [isUserLoggedIn, navigate]);
 
     return (
         <Routes>

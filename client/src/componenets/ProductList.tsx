@@ -18,7 +18,12 @@ import { getProductsAsync } from "../slice/productSlice";
 import { useAppSelector } from "../hook";
 import { BrandsFilters, TypesFilters } from "./ProductFilters";
 
-const ProductCard = ({ name, images, brand }: Product) => {
+type ProductCardProps = {
+    product: Product;
+};
+
+export const ProductCard = ({ product }: ProductCardProps) => {
+    const { name, images, brand } = product;
     return (
         <Grid item xs={4}>
             <Card>
@@ -104,7 +109,7 @@ const ProductList = () => {
             {products.length > 0 ? (
                 <Grid container spacing={2}>
                     {products.map((product) => (
-                        <ProductCard key={product._id} {...product} />
+                        <ProductCard key={product._id} product={product} />
                     ))}
                 </Grid>
             ) : (

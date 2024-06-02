@@ -14,6 +14,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch } from "react-redux";
 import { signInAsync } from "../slice/authSlice";
 import { AppDispatch } from "../store";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormData = {
     email: string;
@@ -22,9 +23,18 @@ type LoginFormData = {
 
 const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+
+    const navigateToProducts = () => {
+        navigate("/products");
+    };
 
     const handleSignIn = (email: string, password: string) => {
-        dispatch(signInAsync({ email, password }));
+        dispatch(signInAsync({ email, password }))
+            .unwrap()
+            .then(() => {
+                navigateToProducts();
+            });
     };
 
     const [formData, setFormData] = useState<LoginFormData>({

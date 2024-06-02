@@ -16,9 +16,16 @@ import { RegisterProps } from "../utils/types";
 import { useDispatch } from "react-redux";
 import { registerAsync } from "../slice/authSlice";
 import { AppDispatch } from "../store";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
     const dispatch = useDispatch<AppDispatch>();
+
+    const navigate = useNavigate();
+
+    const navigateToProducts = () => {
+        navigate("/products");
+    };
 
     const [formData, setFormData] = useState<RegisterProps>({
         username: "",
@@ -77,7 +84,11 @@ const Register = () => {
     };
 
     const onHandleRegister = (formData: RegisterProps) => {
-        dispatch(registerAsync(formData));
+        dispatch(registerAsync(formData))
+            .unwrap()
+            .then(() => {
+                navigateToProducts();
+            });
     };
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
