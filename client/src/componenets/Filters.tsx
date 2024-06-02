@@ -30,7 +30,7 @@ const MultipleSelectCheckmarks = ({
     onSelectionChange,
     name
 }: MultipleSelectCheckmarksProps) => {
-    const [items, setItems] = useState(originalItems);
+    const [items, setItems] = useState<Brand[] | Type[]>([]);
 
     const handleChange = (event: SelectChangeEvent<Brand[] | Type[]>) => {
         setItems(event.target.value as Brand[] | Type[]);
