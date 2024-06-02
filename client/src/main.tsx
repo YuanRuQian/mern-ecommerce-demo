@@ -8,6 +8,7 @@ import store from "./store.ts";
 import ProductList from "./componenets/ProductList.tsx";
 import Register from "./componenets/Register.tsx";
 import { useAppSelector } from "./hook.ts";
+import ProductDetails from "./componenets/ProductDetails.tsx";
 
 const App = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
@@ -18,6 +19,10 @@ const App = () => {
                 <Route index={isUserLoggedIn} element={<ProductList />} />
                 <Route index={!isUserLoggedIn} element={<Login />} />
                 <Route path="products" element={<ProductList />} />
+                <Route
+                    path="product/details/:id"
+                    element={<ProductDetails />}
+                />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
             </Route>
