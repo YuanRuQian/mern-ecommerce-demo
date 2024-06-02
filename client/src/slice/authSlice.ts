@@ -7,6 +7,7 @@ const BASE_URL = "http://localhost:5050/api/auth/";
 type AuthSliceState = {
     isUserLoggedIn: boolean;
     user: User | null;
+    accessToken: string | null;
 };
 
 // Function to initialize state from localStorage
@@ -18,7 +19,8 @@ const getInitialState = (): AuthSliceState => {
 
     return {
         isUserLoggedIn: !!token,
-        user: user
+        user: user,
+        accessToken: token
     };
 };
 
@@ -58,16 +60,17 @@ const authSlice = createSlice({
             console.log("signed out");
             state.isUserLoggedIn = false;
             state.user = null;
+            state.accessToken = null;
             localStorage.removeItem("accessToken");
             localStorage.removeItem("user");
         }
     },
     extraReducers: (builder) => {
-        // Add extra reducers for async actions
         builder
             .addCase(signInAsync.fulfilled, (state, action) => {
                 state.isUserLoggedIn = true;
                 state.user = action.payload.userData;
+                state.accessToken = action.payload.accessToken;
                 localStorage.setItem("accessToken", action.payload.accessToken);
                 localStorage.setItem(
                     "user",
@@ -78,6 +81,7 @@ const authSlice = createSlice({
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.isUserLoggedIn = true;
                 state.user = action.payload.userData;
+                state.accessToken = action.payload.accessToken;
                 localStorage.setItem("accessToken", action.payload.accessToken);
                 localStorage.setItem(
                     "user",

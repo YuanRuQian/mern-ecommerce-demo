@@ -1,4 +1,5 @@
 import controller from "../controller/product.controller.js";
+import authJwt from '../middleware/authJwt.js'
 
 export default function (app) {
     app.use(function (req, res, next) {
@@ -12,7 +13,7 @@ export default function (app) {
     app.get(
         "/api/products",
         [
-            // TODO: add token verification middleware
+            authJwt.verifyToken
         ],
         controller.getProducts
     );

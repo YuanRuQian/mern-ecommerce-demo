@@ -17,13 +17,20 @@ const initialState: ProductSliceState = {
     error: null
 };
 
-// Async action creator to get products
 const getProductsAsync = createAsyncThunk(
     "products/getProductsAsync",
     async ({ page, type, brand }: ProductFilterProps) => {
+        const token = localStorage.getItem("accessToken");
+
+        console.log("products/getProductsAsync Token: ", token);
+
         const response = await axios.get(BASE_URL, {
-            params: { page, type, brand }
+            params: { page, type, brand },
+            headers: {
+                "x-access-token": token
+            }
         });
+
         return response.data;
     }
 );

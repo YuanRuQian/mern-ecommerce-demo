@@ -11,6 +11,10 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useEffect, useState } from "react";
 import { Product } from "../utils/types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import { getProductsAsync } from "../slice/productSlice";
+import { useAppSelector } from "../hook";
 
 const ProductCard = ({ name, images, brand }: Product) => {
     return (
@@ -47,7 +51,9 @@ const ProductCard = ({ name, images, brand }: Product) => {
 };
 
 const ProductList = () => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const products = useAppSelector((state) => state.product.products);
 
     const [page, setPage] = React.useState(1);
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -55,13 +61,8 @@ const ProductList = () => {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:5050/api/products`)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data.products);
-                setProducts(data.products);
-            });
-    }, []);
+        dispatch(getProductsAsync({}));
+    }, [dispatch]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>

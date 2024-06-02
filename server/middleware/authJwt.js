@@ -1,10 +1,11 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
-const db = require("../models");
+import jwt from "jsonwebtoken";
+import  config from "../config/auth.config.js";
+import db from "../model/index.js";
+
 const User = db.user;
 const Role = db.role;
 
-verifyToken = (req, res, next) => {
+const verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
 
     if (!token) {
@@ -24,7 +25,7 @@ verifyToken = (req, res, next) => {
         });
 };
 
-isAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     User.findById(req.userId).exec((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
