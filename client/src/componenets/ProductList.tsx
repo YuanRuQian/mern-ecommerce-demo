@@ -17,6 +17,7 @@ import { AppDispatch } from "../store";
 import { getProductsAsync } from "../slice/productSlice";
 import { useAppSelector } from "../hook";
 import { BrandsFilters, TypesFilters } from "./ProductFilters";
+import { useNavigate } from "react-router-dom";
 
 type ProductCardProps = {
     product: Product;
@@ -24,9 +25,14 @@ type ProductCardProps = {
 
 export const ProductCard = ({ product }: ProductCardProps) => {
     const { name, images, brand } = product;
+    const navigate = useNavigate();
+
+    const navigateToProductDetails = () => {
+        navigate(`/product/details/${product._id}`);
+    };
     return (
         <Grid item xs={4}>
-            <Card>
+            <Card onClick={navigateToProductDetails}>
                 <CardContent>
                     <Typography variant="h5">{brand.name}</Typography>
                     <Typography variant="h6">{name}</Typography>
