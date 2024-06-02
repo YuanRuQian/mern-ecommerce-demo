@@ -101,17 +101,23 @@ const ProductList = () => {
                 <BrandsFilters onBrandsChange={updateBrandFilters} />
                 <TypesFilters onTypesChange={updateTypeFilters} />
             </Stack>
-            <Grid container spacing={2}>
-                {products.map((product) => (
-                    <ProductCard key={product._id} {...product} />
-                ))}
-            </Grid>
-            <Pagination
-                size="large"
-                count={totalPages}
-                page={currentPage}
-                onChange={handleChange}
-            />
+            {products.length > 0 ? (
+                <Grid container spacing={2}>
+                    {products.map((product) => (
+                        <ProductCard key={product._id} {...product} />
+                    ))}
+                </Grid>
+            ) : (
+                <Typography variant="h2">No products found</Typography>
+            )}
+            {totalPages > 0 && (
+                <Pagination
+                    size="large"
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={handleChange}
+                />
+            )}
         </Box>
     );
 };
