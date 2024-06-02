@@ -9,11 +9,21 @@ type AuthSliceState = {
     user: User | null;
 };
 
-// Define the initial state
-const initialState: AuthSliceState = {
-    isUserLoggedIn: false,
-    user: null
+// Function to initialize state from localStorage
+const getInitialState = (): AuthSliceState => {
+    const token = localStorage.getItem("accessToken");
+    const user = token
+        ? JSON.parse(localStorage.getItem("user") as string)
+        : null;
+
+    return {
+        isUserLoggedIn: !!token,
+        user: user
+    };
 };
+
+// Define the initial state
+const initialState: AuthSliceState = getInitialState();
 
 // Async action creator to sign in
 const signInAsync = createAsyncThunk(
@@ -49,6 +59,7 @@ const authSlice = createSlice({
             state.isUserLoggedIn = false;
             state.user = null;
             localStorage.removeItem("accessToken");
+            localStorage.removeItem("user");
         }
     },
     extraReducers: (builder) => {
@@ -58,12 +69,20 @@ const authSlice = createSlice({
                 state.isUserLoggedIn = true;
                 state.user = action.payload.userData;
                 localStorage.setItem("accessToken", action.payload.accessToken);
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(action.payload.userData)
+                );
             })
 
             .addCase(registerAsync.fulfilled, (state, action) => {
                 state.isUserLoggedIn = true;
                 state.user = action.payload.userData;
                 localStorage.setItem("accessToken", action.payload.accessToken);
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(action.payload.userData)
+                );
             });
     }
 });

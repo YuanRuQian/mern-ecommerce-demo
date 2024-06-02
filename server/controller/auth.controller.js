@@ -21,10 +21,12 @@ const signInUser =async (user, res) => {
     const authorities = roles.map(role => role.name);
 
     res.status(200).send({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        roles: authorities,
+        userData: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            roles: authorities
+        },
         accessToken: token
     });
 };
@@ -99,10 +101,12 @@ const signin = async (req, res) => {
 
         // Send response
         res.status(200).send({
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            roles: authorities,
+            userData: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                roles: authorities
+            },
             accessToken: token
         });
     } catch (err) {

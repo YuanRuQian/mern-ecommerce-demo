@@ -13,6 +13,26 @@ export type User = {
     accessToken: string;
 };
 
+export type Product = {
+    _id: string;
+    name: string;
+    images: string[];
+    type: {
+        _id: string;
+        name: string;
+    };
+    brand: {
+        _id: string;
+        name: string;
+    };
+};
+
+export type ProductFilterProps = {
+    page?: number;
+    type?: string;
+    brand?: string;
+};
+
 export type SignInProps = {
     email: string;
     password: string;

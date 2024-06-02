@@ -1,25 +1,24 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { ImageList, ImageListItem } from "@mui/material";
+import {
+    ImageList,
+    ImageListItem,
+    Pagination,
+    Typography
+} from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { useEffect, useState } from "react";
+import { Product } from "../utils/types";
 
-export type Product = {
-    _id: string;
-    name: string;
-    images: string[];
-    brandId: string;
-    typeId: string;
-};
-
-const ProductCard = ({ name, images }: Product) => {
+const ProductCard = ({ name, images, brand }: Product) => {
     return (
         <Grid item xs={4}>
             <Card>
                 <CardContent>
-                    <h3>{name}</h3>
+                    <Typography variant="h5">{brand.name}</Typography>
+                    <Typography variant="h6">{name}</Typography>
                     <ImageList cols={3} sx={{ width: "100%" }}>
                         {images.map((image) => (
                             <ImageListItem key={image}>
@@ -50,11 +49,19 @@ const ProductCard = ({ name, images }: Product) => {
 const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
 
+    const [page, setPage] = React.useState(1);
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
     useEffect(() => {
         fetch(`http://localhost:5050/api/products`)
             .then((res) => res.json())
-            .then((data) => setProducts(data.products));
-    });
+            .then((data) => {
+                console.log(data.products);
+                setProducts(data.products);
+            });
+    }, []);
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -63,6 +70,7 @@ const ProductList = () => {
                     <ProductCard key={product._id} {...product} />
                 ))}
             </Grid>
+            <Pagination count={3} page={page} onChange={handleChange} />
         </Box>
     );
 };

@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import SetMealIcon from "@mui/icons-material/SetMeal";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppSelector } from "../hook";
 import { signOut } from "../slice/authSlice";
 import { useDispatch } from "react-redux";
