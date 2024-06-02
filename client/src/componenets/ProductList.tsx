@@ -10,12 +10,13 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useEffect } from "react";
-import { Product, ProductFilterProps } from "../utils/types";
+import { useEffect, useState } from "react";
+import { Brand, Product, ProductFilterProps, Type } from "../utils/types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getProductsAsync } from "../slice/productSlice";
 import { useAppSelector } from "../hook";
+import { BrandsFilters, TypesFilters } from "./ProductFilters";
 
 const ProductCard = ({ name, images, brand }: Product) => {
     return (
@@ -58,12 +59,25 @@ const ProductList = () => {
     const totalPages = useAppSelector((state) => state.product.totalPages);
     const currentPage = useAppSelector((state) => state.product.currentPage);
 
-    const [productFilter, setProductFilter] =
-        React.useState<ProductFilterProps>({
-            page: 1,
-            type: "",
-            brand: ""
+    const [productFilter, setProductFilter] = useState<ProductFilterProps>({
+        page: 1,
+        type: "",
+        brand: ""
+    });
+
+    const updateTypeFilters = (types: Type[]) => {
+        setProductFilter({
+            ...productFilter,
+            type: types.map((x) => x._id).join(";")
         });
+    };
+
+    const updateBrandFilters = (brands: Brand[]) => {
+        setProductFilter({
+            ...productFilter,
+            brand: brands.map((x) => x._id).join(";")
+        });
+    };
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setProductFilter({ ...productFilter, page: value });
@@ -81,11 +95,11 @@ const ProductList = () => {
                 flexDirection: "column",
                 alignItems: "center"
             }}
+            margin={2}
         >
-            <Stack spacing={2}>
-                {
-                    // TODO: add filters of brand and type
-                }
+            <Stack spacing={2} direction="row" margin={2}>
+                <BrandsFilters onBrandsChange={updateBrandFilters} />
+                <TypesFilters onTypesChange={updateTypeFilters} />
             </Stack>
             <Grid container spacing={2}>
                 {products.map((product) => (

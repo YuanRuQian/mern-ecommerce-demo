@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Product, ProductFilterProps } from "../utils/types";
+import { Brand, Product, ProductFilterProps, Type } from "../utils/types";
 
 const BASE_URL = "http://localhost:5050/api/";
 
 type ProductSliceState = {
     products: Product[];
+    brands: Brand[];
+    types: Type[];
     loading: boolean;
     error: string | null;
     totalPages: number;
@@ -14,10 +16,12 @@ type ProductSliceState = {
 
 const initialState: ProductSliceState = {
     products: [],
+    brands: [],
+    types: [],
     loading: false,
     error: null,
     totalPages: 0,
-    currentPage: 0
+    currentPage: 1
 };
 
 const getProductsAsync = createAsyncThunk(
@@ -48,16 +52,30 @@ const getBrandsAsync = createAsyncThunk("products/getBrandsAsync", async () => {
     return response.data;
 });
 
+const getTypesAsync = createAsyncThunk("products/getTypesAsync", async () => {
+    const token = localStorage.getItem("accessToken");
+
+    const response = await axios.get(`${BASE_URL}types`, {
+        headers: {
+            "x-access-token": token
+        }
+    });
+
+    return response.data;
+});
+
 const productSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
         clearProducts(state) {
             state.products = [];
+            state.brands = [];
+            state.types = [];
             state.loading = false;
             state.error = null;
             state.totalPages = 0;
-            state.currentPage = 0;
+            state.currentPage = 1;
         }
     },
     extraReducers: (builder) => {
@@ -78,11 +96,37 @@ const productSlice = createSlice({
                 state.loading = false;
                 state.error =
                     action.error.message || "Failed to fetch products";
+            })
+            .addCase(getBrandsAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getBrandsAsync.fulfilled, (state, action) => {
+                state.brands = action.payload;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(getBrandsAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch brands";
+            })
+            .addCase(getTypesAsync.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getTypesAsync.fulfilled, (state, action) => {
+                state.types = action.payload;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(getTypesAsync.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch types";
             });
     }
 });
 
-export { getProductsAsync };
+export { getProductsAsync, getBrandsAsync, getTypesAsync };
 
 export const { clearProducts } = productSlice.actions;
 

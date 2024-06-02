@@ -50,7 +50,8 @@ const addProduct = async (req, res) => {
 }
 
 const getProducts = async (req, res) => {
-    const { page = 1, limit = 9, brand, type } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const { limit = 9, brand, type } = req.query;
 
     const filter = {};
     if (brand) {
