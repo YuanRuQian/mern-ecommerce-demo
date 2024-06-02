@@ -2,19 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Product, ProductFilterProps } from "../utils/types";
 
-const BASE_URL = "http://localhost:5050/api/products/";
+const BASE_URL = "http://localhost:5050/api/";
 
 type ProductSliceState = {
     products: Product[];
     loading: boolean;
     error: string | null;
+    totalPages: number;
+    currentPage: number;
 };
 
-// Define the initial state
 const initialState: ProductSliceState = {
     products: [],
     loading: false,
-    error: null
+    error: null,
+    totalPages: 0,
+    currentPage: 0
 };
 
 const getProductsAsync = createAsyncThunk(
@@ -22,9 +25,7 @@ const getProductsAsync = createAsyncThunk(
     async ({ page, type, brand }: ProductFilterProps) => {
         const token = localStorage.getItem("accessToken");
 
-        console.log("products/getProductsAsync Token: ", token);
-
-        const response = await axios.get(BASE_URL, {
+        const response = await axios.get(`${BASE_URL}products`, {
             params: { page, type, brand },
             headers: {
                 "x-access-token": token
@@ -35,6 +36,18 @@ const getProductsAsync = createAsyncThunk(
     }
 );
 
+const getBrandsAsync = createAsyncThunk("products/getBrandsAsync", async () => {
+    const token = localStorage.getItem("accessToken");
+
+    const response = await axios.get(`${BASE_URL}brands`, {
+        headers: {
+            "x-access-token": token
+        }
+    });
+
+    return response.data;
+});
+
 const productSlice = createSlice({
     name: "products",
     initialState,
@@ -43,6 +56,8 @@ const productSlice = createSlice({
             state.products = [];
             state.loading = false;
             state.error = null;
+            state.totalPages = 0;
+            state.currentPage = 0;
         }
     },
     extraReducers: (builder) => {
@@ -56,6 +71,8 @@ const productSlice = createSlice({
                 state.products = action.payload.products;
                 state.loading = false;
                 state.error = null;
+                state.totalPages = action.payload.totalPages;
+                state.currentPage = action.payload.currentPage;
             })
             .addCase(getProductsAsync.rejected, (state, action) => {
                 state.loading = false;

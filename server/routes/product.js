@@ -17,4 +17,20 @@ export default function (app) {
         ],
         controller.getProducts
     );
+
+    app.get(
+        "/api/brands",
+        [
+            authJwt.verifyToken
+        ],
+        controller.getBrands
+    );
+
+    app.get(
+        "/api/types",
+        [
+            authJwt.verifyToken
+        ],
+        controller.getTypes
+    );
 };

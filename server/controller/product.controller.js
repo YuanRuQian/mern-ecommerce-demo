@@ -81,6 +81,26 @@ const getProducts = async (req, res) => {
     }
 };
 
-const product = { getProducts, addType, addBrand, addProduct};
+const getBrands = async (req, res) => {
+    try {
+        const brands = await Brand.find();
+        res.send(brands).status(200);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching records");
+    }
+}
+
+const getTypes = async (req, res) => {
+    try {
+        const types = await Type.find();
+        res.send(types).status(200);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching records");
+    }
+}
+
+const product = { getProducts, addType, addBrand, addProduct, getBrands, getTypes };
 
 export default product;

@@ -5,12 +5,13 @@ import {
     ImageList,
     ImageListItem,
     Pagination,
+    Stack,
     Typography
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useEffect, useState } from "react";
-import { Product } from "../utils/types";
+import { useEffect } from "react";
+import { Product, ProductFilterProps } from "../utils/types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getProductsAsync } from "../slice/productSlice";
@@ -54,24 +55,49 @@ const ProductList = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const products = useAppSelector((state) => state.product.products);
+    const totalPages = useAppSelector((state) => state.product.totalPages);
+    const currentPage = useAppSelector((state) => state.product.currentPage);
 
-    const [page, setPage] = React.useState(1);
+    const [productFilter, setProductFilter] =
+        React.useState<ProductFilterProps>({
+            page: 1,
+            type: "",
+            brand: ""
+        });
+
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
+        setProductFilter({ ...productFilter, page: value });
     };
 
     useEffect(() => {
-        dispatch(getProductsAsync({}));
-    }, [dispatch]);
+        dispatch(getProductsAsync(productFilter));
+    }, [dispatch, productFilter]);
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box
+            sx={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+            }}
+        >
+            <Stack spacing={2}>
+                {
+                    // TODO: add filters of brand and type
+                }
+            </Stack>
             <Grid container spacing={2}>
                 {products.map((product) => (
                     <ProductCard key={product._id} {...product} />
                 ))}
             </Grid>
-            <Pagination count={3} page={page} onChange={handleChange} />
+            <Pagination
+                size="large"
+                count={totalPages}
+                page={currentPage}
+                onChange={handleChange}
+            />
         </Box>
     );
 };
