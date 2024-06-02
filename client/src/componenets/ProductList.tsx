@@ -16,7 +16,7 @@ export type Product = {
 
 const ProductCard = ({ name, images }: Product) => {
     return (
-        <Grid item xs={6}>
+        <Grid item xs={4}>
             <Card>
                 <CardContent>
                     <h3>{name}</h3>
@@ -51,9 +51,9 @@ const ProductList = () => {
     const [products, setProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:5050/product`)
+        fetch(`http://localhost:5050/api/products`)
             .then((res) => res.json())
-            .then((data) => setProducts(data));
+            .then((data) => setProducts(data.products));
     });
 
     return (

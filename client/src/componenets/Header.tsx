@@ -10,17 +10,34 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import SetMealIcon from "@mui/icons-material/SetMeal";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { useAppSelector } from "../hook";
+import { signOut } from "../slice/authSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
 
 type MenuItem = {
     key: string;
     component: JSX.Element;
 };
-// TODO: add logout logic
+
+const LogoutLink = () => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleLogout = () => {
+        dispatch(signOut());
+    };
+
+    return (
+        <Link to="/" onClick={handleLogout}>
+            Logout
+        </Link>
+    );
+};
+
 const loggedInPages: MenuItem[] = [
     { key: "products", component: <Link to="/products">Products</Link> },
-    { key: "logout", component: <Link to="/">Logout</Link> }
+    { key: "logout", component: <LogoutLink /> }
 ];
 const loggedOutPages: MenuItem[] = [
     { key: "login", component: <Link to="/login">Login</Link> },

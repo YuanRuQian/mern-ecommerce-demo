@@ -20,7 +20,7 @@ type LoginFormData = {
     password: string;
 };
 
-const Register = () => {
+const Login = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const handleSignIn = (email: string, password: string) => {
@@ -82,6 +82,8 @@ const Register = () => {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
             handleSignIn(formData.email, formData.password);
+            setFormData({ email: "", password: "" });
+            setErrors({ email: "", password: "" });
         } else {
             setErrors(validationErrors);
         }
@@ -167,4 +169,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;

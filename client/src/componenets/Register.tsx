@@ -87,6 +87,8 @@ const Register = () => {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
             onHandleRegister(formData);
+            setFormData({ username: "", email: "", password: "" });
+            setErrors({ username: "", email: "", password: "" });
         } else {
             setErrors(validationErrors);
         }

@@ -1,21 +1,19 @@
-import express from "express";
+import controller from "../controller/product.controller.js";
 
-// This will help us connect to the database
-import db from "../model/index.js";
+export default function (app) {
+    app.use(function (req, res, next) {
+        res.header(
+            "Access-Control-Allow-Headers",
+            "x-access-token, Origin, Content-Type, Accept"
+        );
+        next();
+    });
 
-// This help convert the id from string to ObjectId for the _id.
-import { ObjectId } from "mongodb";
-
-// router is an instance of the express router.
-// We use it to define our routes.
-// The router will be added as a middleware and will take control of requests starting with path /record.
-const router = express.Router();
-
-router.get("/", async (req, res) => {
-    let collection = await db.collection("products");
-    let results = await collection.find({}).toArray();
-    res.send(results).status(200);
-});
-
-
-export default router;
+    app.get(
+        "/api/products",
+        [
+            // TODO: add token verification middleware
+        ],
+        controller.getProducts
+    );
+};

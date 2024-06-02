@@ -13,9 +13,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/seed", seed);
-app.use("/products", product);
-
 db.mongoose
     .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
         useNewUrlParser: true,
@@ -36,6 +33,8 @@ app.get("/", (req, res) => {
 
 // routes
 auth(app);
+product(app);
+seed(app);
 
 console.log(`connection:\nmongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
 
