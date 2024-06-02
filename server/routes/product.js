@@ -41,4 +41,12 @@ export default function (app) {
         ],
         controller.getProductById
     );
+
+    app.get(
+        "/api/products/brand/:id",
+        [
+            authJwt.verifyToken
+        ],
+        controller.getProductsByBrand
+    );
 };

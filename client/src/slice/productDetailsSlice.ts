@@ -6,10 +6,12 @@ const BASE_URL = "http://localhost:5050/api/";
 
 type ProductDetailsSliceState = {
     productDetails: Product | null;
+    sameBrandProducts: Product[];
 };
 
 const initialState: ProductDetailsSliceState = {
-    productDetails: null
+    productDetails: null,
+    sameBrandProducts: []
 };
 
 const getProductDetailsAsync = createAsyncThunk(
@@ -22,6 +24,24 @@ const getProductDetailsAsync = createAsyncThunk(
                 "x-access-token": token
             }
         });
+
+        return response.data;
+    }
+);
+
+const getSameBrandProductsAsync = createAsyncThunk(
+    "products/getSameBrandProductsAsync",
+    async (brandId: string) => {
+        const token = localStorage.getItem("accessToken");
+
+        const response = await axios.get(
+            `${BASE_URL}products/brand/${brandId}`,
+            {
+                headers: {
+                    "x-access-token": token
+                }
+            }
+        );
 
         return response.data;
     }
@@ -41,9 +61,21 @@ const productDetailsSlice = createSlice({
         builder.addCase(getProductDetailsAsync.rejected, (state) => {
             state.productDetails = null;
         });
+        builder.addCase(getSameBrandProductsAsync.pending, (state) => {
+            state.sameBrandProducts = [];
+        });
+        builder.addCase(
+            getSameBrandProductsAsync.fulfilled,
+            (state, action) => {
+                state.sameBrandProducts = action.payload;
+            }
+        );
+        builder.addCase(getSameBrandProductsAsync.rejected, (state) => {
+            state.sameBrandProducts = [];
+        });
     }
 });
 
-export { getProductDetailsAsync };
+export { getProductDetailsAsync, getSameBrandProductsAsync };
 
 export default productDetailsSlice.reducer;

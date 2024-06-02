@@ -116,6 +116,20 @@ const getProductById = async (req, res) => {
     }
 }
 
-const product = { getProducts, addType, addBrand, addProduct, getBrands, getTypes, getProductById };
+const getProductsByBrand = async (req, res) => {
+    try {
+        const products = await Product.find({ brand: req.params.id })
+            .populate('type')
+            .populate('brand')
+            .exec();
+
+        res.send(products).status(200);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching records");
+    }
+}
+
+const product = { getProducts, addType, addBrand, addProduct, getBrands, getTypes, getProductById, getProductsByBrand };
 
 export default product;

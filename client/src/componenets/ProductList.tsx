@@ -21,9 +21,10 @@ import { useNavigate } from "react-router-dom";
 
 type ProductCardProps = {
     product: Product;
+    clickable?: boolean;
 };
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, clickable }: ProductCardProps) => {
     const { name, images, brand } = product;
     const navigate = useNavigate();
 
@@ -32,7 +33,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     };
     return (
         <Grid item xs={4}>
-            <Card onClick={navigateToProductDetails}>
+            <Card
+                onClick={clickable ? navigateToProductDetails : () => {}}
+                style={{ cursor: clickable ? "pointer" : "default" }}
+            >
                 <CardContent>
                     <Typography variant="h5">{brand.name}</Typography>
                     <Typography variant="h6">{name}</Typography>
@@ -115,7 +119,11 @@ const ProductList = () => {
             {products.length > 0 ? (
                 <Grid container spacing={2}>
                     {products.map((product) => (
-                        <ProductCard key={product._id} product={product} />
+                        <ProductCard
+                            clickable
+                            key={product._id}
+                            product={product}
+                        />
                     ))}
                 </Grid>
             ) : (
