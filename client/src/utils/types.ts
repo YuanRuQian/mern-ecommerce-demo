@@ -14,7 +14,6 @@ export type User = {
     username: string;
     email: string;
     roles: Role[];
-    accessToken: string;
     favorites: Product[];
 };
 
