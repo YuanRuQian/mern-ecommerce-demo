@@ -3,15 +3,24 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RootLayout from "./componenets/RootLayout.tsx";
 import Login from "./componenets/Login.tsx";
-import { Provider } from "react-redux";
-import store from "./store.ts";
+import { Provider, useDispatch } from "react-redux";
+import store, { AppDispatch } from "./store.ts";
 import ProductList from "./componenets/ProductList.tsx";
 import Register from "./componenets/Register.tsx";
 import { useAppSelector } from "./hook.ts";
 import ProductDetails from "./componenets/ProductDetails.tsx";
+import Users from "./componenets/Users.tsx";
+import { loadUserInfoAsync } from "./slice/authSlice.ts";
 
 const App = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
+    const currentUser = useAppSelector((state) => state.auth.user);
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    if (isUserLoggedIn && !currentUser) {
+        dispatch(loadUserInfoAsync());
+    }
 
     return (
         <Routes>
@@ -25,6 +34,7 @@ const App = () => {
                 />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+                <Route path="users" element={<Users />} />
             </Route>
         </Routes>
     );

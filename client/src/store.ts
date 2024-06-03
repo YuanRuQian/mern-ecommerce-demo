@@ -3,12 +3,14 @@ import logger from "redux-logger";
 import authReducer from "./slice/authSlice";
 import productReducer from "./slice/productSlice";
 import productDetailsReducer from "./slice/productDetailsSlice";
+import userReducer from "./slice/userSlice";
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
         product: productReducer,
-        productDetails: productDetailsReducer
+        productDetails: productDetailsReducer,
+        user: userReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

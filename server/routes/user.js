@@ -2,7 +2,7 @@ import db from "../model/index.js";
 import controller from "../controller/user.controller.js";
 import authJwt from '../middleware/authJwt.js'
 
-const {isAdmin, verifyToken} = authJwt;
+const { isAdmin, verifyToken, isUser, canAccessUserData } = authJwt;
 
 export default function (app) {
     app.use(function (req, res, next) {
@@ -15,6 +15,13 @@ export default function (app) {
 
     app.get("/api/users", [
         verifyToken,
-        isAdmin
+        isAdmin,
     ],controller.getAllUsers);
+
+    app.get("/api/users/:userId", [
+        verifyToken,
+        isAdmin,
+        isUser,
+        canAccessUserData
+    ],controller.getUserByUserId);
 };

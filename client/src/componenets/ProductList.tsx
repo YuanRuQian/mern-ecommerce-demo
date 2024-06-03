@@ -1,71 +1,15 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import {
-    ImageList,
-    ImageListItem,
-    Pagination,
-    Stack,
-    Typography
-} from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { Pagination, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Brand, Product, ProductFilterProps, Type } from "../utils/types";
+import { Brand, ProductFilterProps, Type } from "../utils/types";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { getProductsAsync } from "../slice/productSlice";
 import { useAppSelector } from "../hook";
 import { BrandsFilters, TypesFilters } from "./ProductFilters";
-import { useNavigate } from "react-router-dom";
-
-type ProductCardProps = {
-    product: Product;
-    clickable?: boolean;
-};
-
-export const ProductCard = ({ product, clickable }: ProductCardProps) => {
-    const { name, images, brand } = product;
-    const navigate = useNavigate();
-
-    const navigateToProductDetails = () => {
-        navigate(`/product/details/${product._id}`);
-    };
-    return (
-        <Grid item xs={4}>
-            <Card
-                onClick={clickable ? navigateToProductDetails : () => {}}
-                style={{ cursor: clickable ? "pointer" : "default" }}
-            >
-                <CardContent>
-                    <Typography variant="h5">{brand.name}</Typography>
-                    <Typography variant="h6">{name}</Typography>
-                    <ImageList cols={3} sx={{ width: "100%" }}>
-                        {images.map((image) => (
-                            <ImageListItem key={image}>
-                                <div
-                                    style={{ width: "200px", height: "200px" }}
-                                >
-                                    <img
-                                        src={image}
-                                        style={{
-                                            maxWidth: "100%",
-                                            maxHeight: "100%",
-                                            width: "auto",
-                                            height: "auto"
-                                        }}
-                                        loading="lazy"
-                                        alt={name}
-                                    />
-                                </div>
-                            </ImageListItem>
-                        ))}
-                    </ImageList>
-                </CardContent>
-            </Card>
-        </Grid>
-    );
-};
+import { ProductCard } from "./ProductCard";
 
 const ProductList = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -121,11 +65,9 @@ const ProductList = () => {
             {products.length > 0 ? (
                 <Grid container spacing={2}>
                     {products.map((product) => (
-                        <ProductCard
-                            clickable
-                            key={product._id}
-                            product={product}
-                        />
+                        <Grid item xs={4} key={product._id}>
+                            <ProductCard clickable product={product} />
+                        </Grid>
                     ))}
                 </Grid>
             ) : (

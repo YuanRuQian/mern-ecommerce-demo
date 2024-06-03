@@ -13,8 +13,20 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const getUserByUserId = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId)
+            .populate('roles')
+            .populate('favorites').exec();
+        res.status(200).send(user);
+    } catch (err) {
+        res.status(500).send({ message: err });
+    }
+}
+
 const user = {
-    getAllUsers
+    getAllUsers,
+    getUserByUserId
 };
 
 export default user;

@@ -150,9 +150,11 @@ const ResponsiveAppBar = () => {
                                 display: { xs: "block", md: "none" }
                             }}
                         >
-                            {isUserLoggedIn
-                                ? loggedInPages.map(onMenuItemClick)
-                                : loggedOutPages.map(onMenuItemClick)}
+                            {isUserAdmin
+                                ? adminPages.map(onMenuItemClick)
+                                : isUserLoggedIn
+                                  ? loggedInPages.map(onMenuItemClick)
+                                  : loggedOutPages.map(onMenuItemClick)}
                         </Menu>
                     </Box>
                     <SetMealIcon
@@ -182,9 +184,11 @@ const ResponsiveAppBar = () => {
                             display: { xs: "none", md: "flex" }
                         }}
                     >
-                        {isUserLoggedIn
-                            ? loggedInPages.map(onUserMenuItemClick)
-                            : loggedOutPages.map(onUserMenuItemClick)}
+                        {isUserAdmin
+                            ? adminPages.map(onUserMenuItemClick)
+                            : isUserLoggedIn
+                              ? loggedInPages.map(onUserMenuItemClick)
+                              : loggedOutPages.map(onUserMenuItemClick)}
                     </Box>
                 </Toolbar>
             </Container>

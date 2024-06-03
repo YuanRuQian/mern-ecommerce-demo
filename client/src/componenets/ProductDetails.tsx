@@ -1,5 +1,4 @@
 import { Box, Grid, Typography } from "@mui/material";
-import { ProductCard } from "./ProductList";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import {
 } from "../slice/productDetailsSlice";
 import { useAppSelector } from "../hook";
 import { useParams } from "react-router-dom";
+import { ProductCard } from "./ProductCard";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -66,11 +66,13 @@ const ProductDetails = () => {
                     </Typography>
                     <Grid container spacing={4} margin={2}>
                         {sameBrandProducts.map((product) => (
-                            <ProductCard
-                                clickable
-                                key={product._id}
-                                product={product}
-                            />
+                            <Grid item xs={3} key={product._id}>
+                                <ProductCard
+                                    clickable
+                                    key={product._id}
+                                    product={product}
+                                />
+                            </Grid>
                         ))}
                     </Grid>
                 </Box>
