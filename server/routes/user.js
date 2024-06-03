@@ -1,4 +1,3 @@
-import db from "../model/index.js";
 import controller from "../controller/user.controller.js";
 import authJwt from '../middleware/authJwt.js'
 
@@ -24,4 +23,14 @@ export default function (app) {
         isUser,
         canAccessUserData
     ],controller.getUserByUserId);
+
+    app.post("/api/users/favorites",
+    [
+        verifyToken
+    ],
+        controller.addProductToFavorites);
+
+    app.delete("/api/users/favorites/:productId", [
+        verifyToken
+    ],controller.removeProductFromFavorites);
 };

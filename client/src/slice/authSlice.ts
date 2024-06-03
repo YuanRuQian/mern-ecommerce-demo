@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { isUserAdmin, RegisterProps, SignInProps, User } from "../utils/types";
+import {
+    isUserAdmin,
+    Product,
+    RegisterProps,
+    SignInProps,
+    User
+} from "../utils/types";
 
 const BASE_URL = "http://localhost:5050/api/";
 
@@ -11,7 +17,6 @@ type AuthSliceState = {
     accessToken: string | null;
 };
 
-// Function to initialize state from localStorage
 const getInitialState = (): AuthSliceState => {
     const token = localStorage.getItem("accessToken");
 
@@ -61,7 +66,6 @@ const signInAsync = createAsyncThunk(
     }
 );
 
-// Async action creator to register
 const registerAsync = createAsyncThunk(
     "auth/registerAsync",
     async ({ username, email, password }: RegisterProps) => {
@@ -70,6 +74,53 @@ const registerAsync = createAsyncThunk(
             email,
             password
         });
+        return response.data;
+    }
+);
+
+const addProductToFavoritesAsync = createAsyncThunk(
+    "auth/addProductToFavoritesAsync",
+    async (productId: string) => {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            throw new Error("User not logged in");
+        }
+
+        const response = await axios.post(
+            `${BASE_URL}users/favorites`,
+            {
+                productId
+            },
+            {
+                headers: {
+                    "x-access-token": token
+                }
+            }
+        );
+
+        return response.data;
+    }
+);
+
+const removeProductFromFavoritesAsync = createAsyncThunk(
+    "auth/removeProductFromFavoritesAsync",
+    async (productId: string) => {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            throw new Error("User not logged in");
+        }
+
+        const response = await axios.delete(
+            `${BASE_URL}users/favorites/${productId}`,
+            {
+                headers: {
+                    "x-access-token": token
+                }
+            }
+        );
+
         return response.data;
     }
 );
@@ -118,10 +169,49 @@ const authSlice = createSlice({
             state.isUserAdmin = isUserAdmin(action.payload);
             state.isUserLoggedIn = true;
         });
+
+        builder.addCase(
+            addProductToFavoritesAsync.fulfilled,
+            (state, action) => {
+                if (state.user) {
+                    const newFavorites = [
+                        ...state.user.favorites,
+                        action.payload.product
+                    ];
+                    state.user = {
+                        ...state.user,
+                        favorites: newFavorites
+                    };
+                }
+            }
+        );
+
+        builder.addCase(
+            removeProductFromFavoritesAsync.fulfilled,
+            (state, action) => {
+                if (!state.user) {
+                    return;
+                }
+                const newFavorites = state.user.favorites.filter(
+                    (product: Product) =>
+                        product._id !== action.payload.product._id
+                );
+                state.user = {
+                    ...state.user,
+                    favorites: newFavorites
+                };
+            }
+        );
     }
 });
 
-export { signInAsync, registerAsync, loadUserInfoAsync };
+export {
+    signInAsync,
+    registerAsync,
+    loadUserInfoAsync,
+    addProductToFavoritesAsync,
+    removeProductFromFavoritesAsync
+};
 
 export const { signOut } = authSlice.actions;
 

@@ -64,7 +64,13 @@ const signin = async (req, res) => {
         // Find user by email
         const user = await User.findOne({ email: req.body.email })
             .populate("roles")
-            .populate("favorites")
+            .populate({
+                path: 'favorites',
+                populate: [
+                    { path: 'brand' },
+                    { path: 'type' }
+                ]
+            })
             .exec();
 
         // Check if user exists

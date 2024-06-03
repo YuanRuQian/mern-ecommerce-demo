@@ -17,6 +17,14 @@ const ProductList = () => {
     const products = useAppSelector((state) => state.product.products);
     const totalPages = useAppSelector((state) => state.product.totalPages);
     const currentPage = useAppSelector((state) => state.product.currentPage);
+    const currentUser = useAppSelector((state) => state.auth.user);
+
+    const isProductFavorite = (productId: string) => {
+        if (!currentUser) {
+            return false;
+        }
+        return currentUser.favorites.some((x) => x._id === productId);
+    };
 
     const [productFilter, setProductFilter] = useState<ProductFilterProps>({
         page: 1,
@@ -66,7 +74,11 @@ const ProductList = () => {
                 <Grid container spacing={2}>
                     {products.map((product) => (
                         <Grid item xs={4} key={product._id}>
-                            <ProductCard clickable product={product} />
+                            <ProductCard
+                                clickable
+                                product={product}
+                                isFavorite={isProductFavorite(product._id)}
+                            />
                         </Grid>
                     ))}
                 </Grid>
