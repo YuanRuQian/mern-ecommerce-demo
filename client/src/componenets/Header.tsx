@@ -37,6 +37,7 @@ const LogoutLink = () => {
 
 const loggedInPages: MenuItem[] = [
     { key: "products", component: <Link to="/products">Products</Link> },
+    { key: "favorites", component: <Link to="/favorites">Favorites</Link> },
     { key: "logout", component: <LogoutLink /> }
 ];
 const loggedOutPages: MenuItem[] = [
@@ -48,9 +49,8 @@ const loggedOutPages: MenuItem[] = [
 ];
 
 const adminPages: MenuItem[] = [
-    { key: "products", component: <Link to="/products">Products</Link> },
-    { key: "users", component: <Link to="/users">Users</Link> },
-    { key: "logout", component: <LogoutLink /> }
+    ...loggedInPages,
+    { key: "users", component: <Link to="/users">Users</Link> }
 ];
 
 const ResponsiveAppBar = () => {

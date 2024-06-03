@@ -10,6 +10,7 @@ import { getProductsAsync } from "../slice/productSlice";
 import { useAppSelector } from "../hook";
 import { BrandsFilters, TypesFilters } from "./ProductFilters";
 import { ProductCard } from "./ProductCard";
+import { isProductFavorite } from "../utils/helpers";
 
 const ProductList = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,11 +20,11 @@ const ProductList = () => {
     const currentPage = useAppSelector((state) => state.product.currentPage);
     const currentUser = useAppSelector((state) => state.auth.user);
 
-    const isProductFavorite = (productId: string) => {
+    const checkIsProductFavorite = (productId: string) => {
         if (!currentUser) {
             return false;
         }
-        return currentUser.favorites.some((x) => x._id === productId);
+        return isProductFavorite(productId, currentUser.favorites);
     };
 
     const [productFilter, setProductFilter] = useState<ProductFilterProps>({
@@ -77,7 +78,7 @@ const ProductList = () => {
                             <ProductCard
                                 clickable
                                 product={product}
-                                isFavorite={isProductFavorite(product._id)}
+                                isFavorite={checkIsProductFavorite(product._id)}
                             />
                         </Grid>
                     ))}

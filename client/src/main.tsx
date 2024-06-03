@@ -11,6 +11,7 @@ import { useAppSelector } from "./hook.ts";
 import ProductDetails from "./componenets/ProductDetails.tsx";
 import Users from "./componenets/Users.tsx";
 import { loadUserInfoAsync } from "./slice/authSlice.ts";
+import MyFavorites from "./componenets/MyFavorites.tsx";
 
 const App = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="users" element={<Users />} />
+                <Route path="favorites" element={<MyFavorites />} />
             </Route>
         </Routes>
     );

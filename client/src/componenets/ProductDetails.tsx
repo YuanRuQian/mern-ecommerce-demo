@@ -9,6 +9,7 @@ import {
 import { useAppSelector } from "../hook";
 import { useParams } from "react-router-dom";
 import { ProductCard } from "./ProductCard";
+import { isProductFavorite } from "../utils/helpers";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -21,6 +22,15 @@ const ProductDetails = () => {
     const sameBrandProducts = useAppSelector(
         (state) => state.productDetails.sameBrandProducts
     ).filter((product) => product._id !== id);
+
+    const currentUser = useAppSelector((state) => state.auth.user);
+
+    const checkIsProductFavorite = (productId: string) => {
+        if (!currentUser) {
+            return false;
+        }
+        return isProductFavorite(productId, currentUser.favorites);
+    };
 
     useEffect(() => {
         dispatch(getProductDetailsAsync(id as string))
@@ -46,7 +56,12 @@ const ProductDetails = () => {
             }}
             margin={2}
         >
-            {productDetails && <ProductCard product={productDetails} />}
+            {productDetails && (
+                <ProductCard
+                    product={productDetails}
+                    isFavorite={checkIsProductFavorite(productDetails._id)}
+                />
+            )}
             {showError && (
                 <Typography variant="h4">
                     Product with id {id} not found
@@ -71,6 +86,9 @@ const ProductDetails = () => {
                                     clickable
                                     key={product._id}
                                     product={product}
+                                    isFavorite={checkIsProductFavorite(
+                                        product._id
+                                    )}
                                 />
                             </Grid>
                         ))}
