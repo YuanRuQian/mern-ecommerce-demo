@@ -4,13 +4,22 @@ export enum RoleTypes {
     ADMIN = "admin"
 }
 
+export type Role = {
+    _id: string;
+    name: RoleTypes;
+};
 // Define the User type
 export type User = {
-    id: string;
+    _id: string;
     username: string;
     email: string;
-    roles: RoleTypes[];
+    roles: Role[];
     accessToken: string;
+    favorites: Product[];
+};
+
+export const isUserAdmin = (user: User | null) => {
+    return user?.roles.some((role) => role.name === RoleTypes.ADMIN) || false;
 };
 
 export type Brand = {

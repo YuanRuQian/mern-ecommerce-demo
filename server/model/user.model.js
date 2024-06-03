@@ -18,8 +18,14 @@ const userSchema = Schema({
             type: ObjectId,
             ref: "Role"
         }
+    ],
+    favorites: [
+        {
+            type: ObjectId,
+            ref: "Product"
+        }
     ]
-})
+});
 
 const user = model("User", userSchema)
 

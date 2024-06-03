@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RegisterProps, SignInProps, User } from "../utils/types";
+import { isUserAdmin, RegisterProps, SignInProps, User } from "../utils/types";
 
 const BASE_URL = "http://localhost:5050/api/auth/";
 
 type AuthSliceState = {
     isUserLoggedIn: boolean;
+    isUserAdmin: boolean;
     user: User | null;
     accessToken: string | null;
 };
@@ -19,15 +20,14 @@ const getInitialState = (): AuthSliceState => {
 
     return {
         isUserLoggedIn: !!token,
+        isUserAdmin: isUserAdmin(user),
         user: user,
         accessToken: token
     };
 };
 
-// Define the initial state
 const initialState: AuthSliceState = getInitialState();
 
-// Async action creator to sign in
 const signInAsync = createAsyncThunk(
     "auth/signInAsync",
     async ({ email, password }: SignInProps) => {
@@ -59,6 +59,7 @@ const authSlice = createSlice({
         signOut(state) {
             console.log("signed out");
             state.isUserLoggedIn = false;
+            state.isUserAdmin = false;
             state.user = null;
             state.accessToken = null;
             localStorage.removeItem("accessToken");
@@ -74,6 +75,7 @@ const authSlice = createSlice({
                     JSON.stringify(action.payload.userData)
                 );
                 state.isUserLoggedIn = true;
+                state.isUserAdmin = isUserAdmin(action.payload.userData);
                 state.user = action.payload.userData;
                 state.accessToken = action.payload.accessToken;
             })
@@ -85,6 +87,7 @@ const authSlice = createSlice({
                     JSON.stringify(action.payload.userData)
                 );
                 state.isUserLoggedIn = true;
+                state.isUserAdmin = isUserAdmin(action.payload.userData);
                 state.user = action.payload.userData;
                 state.accessToken = action.payload.accessToken;
             });

@@ -14,19 +14,9 @@ const signInUser =async (user, res) => {
             allowInsecureKeySizes: true,
             expiresIn: 86400, // 24 hours
         });
-
-    const roles = await Role.find({
-        _id: { $in: user.roles }
-    });
-    const authorities = roles.map(role => role.name);
-
+    
     res.status(200).send({
-        userData: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            roles: authorities
-        },
+        userData: user,
         accessToken: token
     });
 };
@@ -72,7 +62,10 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
     try {
         // Find user by email
-        const user = await User.findOne({ email: req.body.email }).populate("roles", "-__v").exec();
+        const user = await User.findOne({ email: req.body.email })
+            .populate("roles")
+            .populate("favorites")
+            .exec();
 
         // Check if user exists
         if (!user) {
@@ -96,17 +89,10 @@ const signin = async (req, res) => {
             expiresIn: 86400, // 24 hours
         });
 
-        // Get user roles
-        const authorities = user.roles.map(role => role.name);
-
+        
         // Send response
         res.status(200).send({
-            userData: {
-                id: user._id,
-                username: user.username,
-                email: user.email,
-                roles: authorities
-            },
+            userData: user,
             accessToken: token
         });
     } catch (err) {

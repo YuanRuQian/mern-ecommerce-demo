@@ -47,8 +47,15 @@ const loggedOutPages: MenuItem[] = [
     }
 ];
 
+const adminPages: MenuItem[] = [
+    { key: "products", component: <Link to="/products">Products</Link> },
+    { key: "users", component: <Link to="/users">Users</Link> },
+    { key: "logout", component: <LogoutLink /> }
+];
+
 const ResponsiveAppBar = () => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
+    const isUserAdmin = useAppSelector((state) => state.auth.isUserAdmin);
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
         null

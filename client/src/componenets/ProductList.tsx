@@ -83,14 +83,16 @@ const ProductList = () => {
     const updateTypeFilters = (types: Type[]) => {
         setProductFilter({
             ...productFilter,
-            type: types.map((x) => x._id).join(";")
+            type: types.map((x) => x._id).join(";"),
+            page: 1
         });
     };
 
     const updateBrandFilters = (brands: Brand[]) => {
         setProductFilter({
             ...productFilter,
-            brand: brands.map((x) => x._id).join(";")
+            brand: brands.map((x) => x._id).join(";"),
+            page: 1
         });
     };
 
