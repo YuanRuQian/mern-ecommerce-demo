@@ -57,24 +57,42 @@ const initialState: AuthSliceState = getInitialState();
 
 const signInAsync = createAsyncThunk(
     "auth/signInAsync",
-    async ({ email, password }: SignInProps) => {
-        const response = await axios.post(`${BASE_URL}auth/signin`, {
-            email,
-            password
-        });
-        return response.data;
+    async ({ email, password }: SignInProps, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${BASE_URL}auth/signin`, {
+                email,
+                password
+            });
+            return response.data;
+        } catch (error) {
+            // Check if the error is an Axios error and has a response
+            if (axios.isAxiosError(error) && error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: "An unexpected error occurred" });
+        }
     }
 );
 
 const registerAsync = createAsyncThunk(
     "auth/registerAsync",
-    async ({ username, email, password }: RegisterProps) => {
-        const response = await axios.post(`${BASE_URL}auth/signup`, {
-            username,
-            email,
-            password
-        });
-        return response.data;
+    async (
+        { username, email, password }: RegisterProps,
+        { rejectWithValue }
+    ) => {
+        try {
+            const response = await axios.post(`${BASE_URL}auth/signup`, {
+                username,
+                email,
+                password
+            });
+            return response.data;
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                return rejectWithValue(error.response.data);
+            }
+            return rejectWithValue({ message: "An unexpected error occurred" });
+        }
     }
 );
 

@@ -8,8 +8,6 @@ type ProductSliceState = {
     products: Product[];
     brands: Brand[];
     types: Type[];
-    loading: boolean;
-    error: string | null;
     totalPages: number;
     currentPage: number;
 };
@@ -18,8 +16,6 @@ const initialState: ProductSliceState = {
     products: [],
     brands: [],
     types: [],
-    loading: false,
-    error: null,
     totalPages: 0,
     currentPage: 1
 };
@@ -72,8 +68,6 @@ const productSlice = createSlice({
             state.products = [];
             state.brands = [];
             state.types = [];
-            state.loading = false;
-            state.error = null;
             state.totalPages = 0;
             state.currentPage = 1;
         }
@@ -81,47 +75,16 @@ const productSlice = createSlice({
     extraReducers: (builder) => {
         // Add extra reducers for async actions
         builder
-            .addCase(getProductsAsync.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
             .addCase(getProductsAsync.fulfilled, (state, action) => {
                 state.products = action.payload.products;
-                state.loading = false;
-                state.error = null;
                 state.totalPages = action.payload.totalPages;
                 state.currentPage = action.payload.currentPage;
             })
-            .addCase(getProductsAsync.rejected, (state, action) => {
-                state.loading = false;
-                state.error =
-                    action.error.message || "Failed to fetch products";
-            })
-            .addCase(getBrandsAsync.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
             .addCase(getBrandsAsync.fulfilled, (state, action) => {
                 state.brands = action.payload;
-                state.loading = false;
-                state.error = null;
-            })
-            .addCase(getBrandsAsync.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message || "Failed to fetch brands";
-            })
-            .addCase(getTypesAsync.pending, (state) => {
-                state.loading = true;
-                state.error = null;
             })
             .addCase(getTypesAsync.fulfilled, (state, action) => {
                 state.types = action.payload;
-                state.loading = false;
-                state.error = null;
-            })
-            .addCase(getTypesAsync.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message || "Failed to fetch types";
             });
     }
 });

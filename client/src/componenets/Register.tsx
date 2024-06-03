@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { registerAsync } from "../slice/authSlice";
 import { AppDispatch } from "../store";
 import { useNavigate } from "react-router-dom";
+import { Alert, Snackbar } from "@mui/material";
 
 const Register = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -25,6 +26,21 @@ const Register = () => {
 
     const navigateToProducts = () => {
         navigate("/products");
+    };
+
+    const [open, setOpen] = React.useState(false);
+
+    const [error, setError] = React.useState<string>("");
+
+    const handleClose = (
+        event: React.SyntheticEvent | Event,
+        reason?: string
+    ) => {
+        if (reason === "clickaway") {
+            return;
+        }
+
+        setOpen(false);
     };
 
     const [formData, setFormData] = useState<RegisterProps>({
@@ -87,7 +103,13 @@ const Register = () => {
         dispatch(registerAsync(formData))
             .unwrap()
             .then(() => {
+                setFormData({ username: "", email: "", password: "" });
+                setErrors({ username: "", email: "", password: "" });
                 navigateToProducts();
+            })
+            .catch((error) => {
+                setError(error.message);
+                setOpen(true);
             });
     };
 
@@ -98,8 +120,6 @@ const Register = () => {
             // Submit form data to the server
             console.log("Form data is valid. Submitting:", formData);
             onHandleRegister(formData);
-            setFormData({ username: "", email: "", password: "" });
-            setErrors({ username: "", email: "", password: "" });
         } else {
             setErrors(validationErrors);
         }
@@ -201,6 +221,21 @@ const Register = () => {
             >
                 Register
             </Button>
+            <Snackbar
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                autoHideDuration={6000}
+            >
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                >
+                    {error}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

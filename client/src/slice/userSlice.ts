@@ -32,9 +32,6 @@ const userSlice = createSlice({
         builder.addCase(getUsersAsync.fulfilled, (state, action) => {
             state.users = action.payload;
         });
-        builder.addCase(getUsersAsync.rejected, (state) => {
-            state.users = [];
-        });
     }
 });
 
