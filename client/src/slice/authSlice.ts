@@ -32,16 +32,11 @@ const loadUserInfoAsync = createAsyncThunk(
     "auth/loadUserInfoAsync",
     async () => {
         const token = localStorage.getItem("accessToken");
-        const userId = localStorage.getItem("userId");
         if (!token) {
             throw new Error("User not logged in");
         }
 
-        if (!userId) {
-            throw new Error("User ID not found");
-        }
-
-        const response = await axios.get(`${BASE_URL}users/${userId}`, {
+        const response = await axios.get(`${BASE_URL}currentUserInfo`, {
             headers: {
                 "x-access-token": token
             }
@@ -154,17 +149,12 @@ const authSlice = createSlice({
             state.user = null;
             state.accessToken = null;
             localStorage.removeItem("accessToken");
-            localStorage.removeItem("userId");
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(signInAsync.fulfilled, (state, action) => {
                 localStorage.setItem("accessToken", action.payload.accessToken);
-                localStorage.setItem(
-                    "userId",
-                    (action.payload.userData as User)._id
-                );
                 state.isUserLoggedIn = true;
                 state.isUserAdmin = isUserAdmin(
                     action.payload.userData as User
@@ -175,7 +165,6 @@ const authSlice = createSlice({
 
             .addCase(registerAsync.fulfilled, (state, action) => {
                 localStorage.setItem("accessToken", action.payload.accessToken);
-                localStorage.setItem("userId", action.payload.userData._id);
                 state.isUserLoggedIn = true;
                 state.isUserAdmin = isUserAdmin(action.payload.userData);
                 state.user = action.payload.userData;

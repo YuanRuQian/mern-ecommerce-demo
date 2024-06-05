@@ -34,16 +34,23 @@ const App = () => {
                 <Route
                     index={isUserLoggedIn}
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute redirectIfLoggedIn={false}>
                             <ProductList />
                         </ProtectedRoute>
                     }
                 />
-                <Route index={!isUserLoggedIn} element={<Login />} />
+                <Route
+                    index={!isUserLoggedIn}
+                    element={
+                        <ProtectedRoute redirectIfLoggedIn={true}>
+                            <Login />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route
                     path="products"
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute redirectIfLoggedIn={false}>
                             <ProductList />
                         </ProtectedRoute>
                     }
@@ -51,13 +58,27 @@ const App = () => {
                 <Route
                     path="product/details/:id"
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute redirectIfLoggedIn={false}>
                             <ProductDetails />
                         </ProtectedRoute>
                     }
                 />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
+                <Route
+                    path="login"
+                    element={
+                        <ProtectedRoute redirectIfLoggedIn={true}>
+                            <Login />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="register"
+                    element={
+                        <ProtectedRoute redirectIfLoggedIn={true}>
+                            <Register />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route
                     path="users"
                     element={
@@ -69,7 +90,7 @@ const App = () => {
                 <Route
                     path="favorites"
                     element={
-                        <ProtectedRoute>
+                        <ProtectedRoute redirectIfLoggedIn={false}>
                             <MyFavorites />
                         </ProtectedRoute>
                     }

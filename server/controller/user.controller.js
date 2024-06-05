@@ -18,9 +18,9 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-const getUserByUserId = async (req, res) => {
+const getCurrentUserInfo = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId)
+    const user = await User.findById(req.userId)
       .populate("roles")
       .populate({
         path: "favorites",
@@ -99,7 +99,7 @@ const removeProductFromFavorites = async (req, res) => {
 
 const user = {
   getAllUsers,
-  getUserByUserId,
+  getCurrentUserInfo,
   addProductToFavorites,
   removeProductFromFavorites,
 };

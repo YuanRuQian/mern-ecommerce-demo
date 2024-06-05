@@ -1,21 +1,33 @@
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../hook";
-import { Alert } from "@mui/material";
 
 type ProtectedRouteProps = {
     children: React.ReactNode;
+    redirectIfLoggedIn: boolean;
 };
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute = ({
+    children,
+    redirectIfLoggedIn
+}: ProtectedRouteProps) => {
     const isUserLoggedIn = useAppSelector((state) => state.auth.isUserLoggedIn);
-    if (!isUserLoggedIn) {
+
+    if (redirectIfLoggedIn && isUserLoggedIn) {
+        return <Navigate to="/" replace />;
+    }
+
+    if (!redirectIfLoggedIn && !isUserLoggedIn) {
         return <Navigate to="/login" replace />;
     }
 
     return children;
 };
 
-export const ProtectedAdminRoute = ({ children }: ProtectedRouteProps) => {
+type ProtectedAdminRouteProps = {
+    children: React.ReactNode;
+};
+
+export const ProtectedAdminRoute = ({ children }: ProtectedAdminRouteProps) => {
     const isUserAdmin = useAppSelector((state) => state.auth.isUserAdmin);
 
     if (!isUserAdmin) {
