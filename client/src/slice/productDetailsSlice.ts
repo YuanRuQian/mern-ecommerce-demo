@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Product } from "../utils/types";
 
-const BASE_URL = "http://localhost:5050/api/";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 type ProductDetailsSliceState = {
     productDetails: Product | null;

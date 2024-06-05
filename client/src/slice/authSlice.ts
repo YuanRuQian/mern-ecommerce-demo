@@ -8,7 +8,7 @@ import {
     User
 } from "../utils/types";
 
-const BASE_URL = "http://localhost:5050/api/";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 type AuthSliceState = {
     isUserLoggedIn: boolean;
