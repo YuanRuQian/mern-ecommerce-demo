@@ -49,8 +49,10 @@ const loggedOutPages: MenuItem[] = [
 ];
 
 const adminPages: MenuItem[] = [
-    ...loggedInPages,
-    { key: "users", component: <Link to="/users">Users</Link> }
+    { key: "products", component: <Link to="/products">Products</Link> },
+    { key: "favorites", component: <Link to="/favorites">Favorites</Link> },
+    { key: "users", component: <Link to="/users">Users</Link> },
+    { key: "logout", component: <LogoutLink /> }
 ];
 
 const ResponsiveAppBar = () => {
