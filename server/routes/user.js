@@ -14,11 +14,7 @@ export default function (app) {
 
   app.get("/api/users", [verifyToken, isAdmin], controller.getAllUsers);
 
-  app.get(
-    "/api/users/:userId",
-    [verifyToken, isAdmin, isUser, canAccessUserData],
-    controller.getUserByUserId,
-  );
+  app.get("/api/currentUserInfo", [verifyToken], controller.getCurrentUserInfo);
 
   app.post(
     "/api/users/favorites",

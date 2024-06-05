@@ -22,8 +22,7 @@ const signInUser = async (user, res) => {
 const signup = async (req, res) => {
   try {
     // Create new user
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = bcrypt.hashSync(req.body.password);
     const user = new User({
       username: req.body.username,
       email: req.body.email,
@@ -75,7 +74,10 @@ const signin = async (req, res) => {
     }
 
     // Validate password
-    const passwordIsValid = bcrypt.compare(req.body.password, user.password);
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.password,
+      user.password,
+    );
 
     if (!passwordIsValid) {
       return res.status(401).send({
