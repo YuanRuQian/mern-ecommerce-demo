@@ -1,5 +1,4 @@
-import { ref } from "firebase-functions/v1/database";
-import mongoose, { Schema, ObjectId, model } from "mongoose";
+import { Schema, model, ObjectId } from "mongoose";
 
 const productSchema = new Schema({
   name: {
