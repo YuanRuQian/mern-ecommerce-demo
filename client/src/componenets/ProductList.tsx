@@ -65,14 +65,14 @@ const ProductList = () => {
                 flexDirection: "column",
                 alignItems: "center"
             }}
-            margin={2}
+            margin={4}
         >
             <Stack spacing={2} direction="row" margin={2}>
                 <BrandsFilters onBrandsChange={updateBrandFilters} />
                 <TypesFilters onTypesChange={updateTypeFilters} />
             </Stack>
             {products.length > 0 ? (
-                <Grid container spacing={2}>
+                <Grid container spacing={2} margin={2}>
                     {products.map((product) => (
                         <Grid item xs={4} key={product._id}>
                             <ProductCard
@@ -87,12 +87,14 @@ const ProductList = () => {
                 <Typography variant="h2">No products found</Typography>
             )}
             {totalPages > 0 && (
-                <Pagination
-                    size="large"
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handleChange}
-                />
+                <Box margin={2}>
+                    <Pagination
+                        size="large"
+                        count={totalPages}
+                        page={currentPage}
+                        onChange={handleChange}
+                    />
+                </Box>
             )}
         </Box>
     );
