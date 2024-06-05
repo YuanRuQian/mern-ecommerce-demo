@@ -30,10 +30,7 @@ const Login = () => {
 
     const [error, setError] = React.useState<string>("");
 
-    const handleClose = (
-        event: React.SyntheticEvent | Event,
-        reason?: string
-    ) => {
+    const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === "clickaway") {
             return;
         }
